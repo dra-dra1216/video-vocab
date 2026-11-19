@@ -136,7 +136,7 @@ The extension sends the video URL to Supadata for captions, and sends relevant c
 
 ## Remix it with your coding agent
 
-Video Vocab uses plain HTML, CSS, and JavaScript. Ideas for your own copy include more translation target languages and customized summary templates. For Video Vocab questions, use this repository's documentation and security reporting instructions. The upstream project states that upstream issues and pull requests are not accepted.
+Video Vocab uses plain HTML, CSS, and JavaScript. In your own copy, you can add more translation languages, such as Japanese or Spanish as output options, and use customized summary templates. For Video Vocab questions, use this repository's documentation and security reporting instructions. The upstream project states that upstream issues and pull requests are not accepted.
 
 To change providers or models, first open the exact Video Vocab project folder that Chrome loaded through **Load unpacked** in your coding agent. In **Settings**, use **Copy customization prompt** and supply the provider and model. Enter your key in the extension after the adaptation.
 

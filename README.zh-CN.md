@@ -136,7 +136,7 @@ Video Vocab 是一个桌面 Chrome 扩展，基于 Zara Zhang 的 YouTube Digest
 
 ## 用编程 Agent 改造成自己的版本
 
-Video Vocab 使用原生 HTML、CSS 与 JavaScript。可在自己的副本里增加更多翻译目标语言、自定义总结模板或适合自己的复习方式。对于 Video Vocab 的问题，请参考本仓库的文档和安全说明，原项目不接受上游 Issue 或 Pull Request。
+Video Vocab 使用原生 HTML、CSS 与 JavaScript。可在自己的副本里增加更多翻译语言，例如新增日语或西班牙语译文，也可以自定义总结模板或复习方式。对于 Video Vocab 的问题，请参考本仓库的文档和安全说明，原项目不接受上游 Issue 或 Pull Request。
 
 如果想换 AI 服务或模型，请先在编程 Agent 中打开 Chrome 通过“加载已解压的扩展程序”使用的那个准确的 Video Vocab 项目文件夹，再从 **Settings → Copy customization prompt** 复制提示并填写服务和模型名。配置完成后自行在扩展里填写密钥。
 
