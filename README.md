@@ -2,18 +2,18 @@
 
 **English** · [简体中文完整教程](README.zh-CN.md)
 
-**Find useful English expressions chapter by chapter on YouTube, save them with their original sentences and timestamps, and review them in an offline vocabulary notebook.**
+**Translate multilingual YouTube captions into Simplified Chinese, view the original and translation together, and save useful English expressions by chapter for offline spaced review.**
 
 [Highlights](#highlights) · [Manual installation](#1-install-in-chrome-manually) · [API keys](#2-get-and-enter-your-api-keys) · [First use](#3-learn-from-a-video) · [Notebook](#4-build-your-vocabulary-notebook) · [Supported scope](#supported-scope) · [Troubleshooting](#troubleshooting)
 
-Video Vocab is a desktop Chrome extension based on Zara Zhang's YouTube Digest. It is designed for learners who already know some English and want to pick up natural expressions from interviews, talks, and courses. [Original project](https://github.com/zarazhangrui/youtube-digest) · [MIT license](LICENSE)
+Video Vocab is a desktop Chrome extension based on Zara Zhang's YouTube Digest. Use it to follow interviews, talks, and courses in different languages and build a collection of natural English expressions. [Original project](https://github.com/zarazhangrui/youtube-digest) · [MIT license](LICENSE)
 
 ## Highlights
 
 - **Learn one chapter at a time.** The sidebar extracts reusable phrases, natural collocations, and useful words from the selected chapter. Start with 10, then show more as needed. Select a chapter or a timestamp to return to that point in the video.
 - **Keep the context when you save.** Save an expression with its meaning, source sentence, and timestamp when available. You can also select a phrase directly from the transcript.
 - **Review across videos in one offline notebook.** Export an HTML notebook, open it in your browser, and use FSRS-6 for spaced review. Each entry links back to its video and timestamp.
-- **Follow the whole video in one sidebar.** Use the original project's searchable transcripts, bilingual translation, AI overviews, key quotes, text explanations, and timestamped notes.
+- **Read the original captions alongside Chinese.** Search multilingual captions and switch between the original text, Simplified Chinese, and bilingual view. The sidebar also offers AI overviews, key quotes, text explanations, and timestamped notes.
 
 ## 1. Install in Chrome manually
 
@@ -30,7 +30,7 @@ Use desktop Google Chrome 116 or later. Installation and daily use require neith
 1. Open `chrome://extensions`. Alternatively, click the puzzle-piece icon in Chrome's toolbar and choose **Manage Extensions**.
 2. Turn on **Developer mode** in the upper-right corner. Click **Load unpacked** and select the folder containing `manifest.json`. [Chrome installation guide](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 3. Look for the **Video Vocab** card on the extensions page. Open the puzzle-piece menu and pin **Video Vocab** for quick access.
-4. Open a public YouTube video with English captions and click **Video Vocab** in the toolbar. The sidebar prompts you to configure keys on first use.
+4. Open a public YouTube video with available captions and click **Video Vocab** in the toolbar. The sidebar prompts you to configure keys on first use.
 
 To update, extract the new files into the same installation folder, click **Reload** on the Video Vocab card at `chrome://extensions`, and reopen the sidebar. If the current video tab still connects to an older version, refresh the video tab.
 
@@ -39,13 +39,13 @@ To update, extract the new files into the same installation folder, click **Relo
 | Key | What it does | Where to get it |
 | --- | --- | --- |
 | **Supadata API key** | Fetches native YouTube captions and timestamps | [Supadata dashboard](https://dash.supadata.ai/) |
-| **DeepSeek API key** | Powers overviews, bilingual translation, text explanations, vocabulary extraction and meanings, and note polishing | [DeepSeek API Keys](https://platform.deepseek.com/api_keys) |
+| **DeepSeek API key** | Powers overviews, translation from multiple caption languages into Simplified Chinese, text explanations, vocabulary extraction and meanings, and note polishing | [DeepSeek API Keys](https://platform.deepseek.com/api_keys) |
 
 ### Get a Supadata API key
 
 1. If you are new to Supadata, sign up and complete the onboarding prompts, including email verification if requested. Existing users can sign in to the dashboard. [Supadata sign-up](https://dash.supadata.ai/auth/sign-up)
 2. Find **API key** in the dashboard. Follow the onboarding prompts to generate or display your key, then copy it.
-3. Check that your account has caption-request credits. For your first test, choose a public video with English captions. Video Vocab uses `mode=native`, so captions depend on which existing tracks Supadata can fetch. [Supadata dashboard](https://dash.supadata.ai/) · [Native transcript API](https://docs.supadata.ai/get-transcript)
+3. Check that your account has caption-request credits. For your first test, choose a public video with available captions. Video Vocab uses `mode=native`, so captions depend on which existing tracks Supadata can fetch. [Supadata dashboard](https://dash.supadata.ai/) · [Native transcript API](https://docs.supadata.ai/get-transcript)
 
 ### Get a DeepSeek API key
 
@@ -58,7 +58,7 @@ To update, extract the new files into the same installation folder, click **Relo
 1. Open the sidebar on YouTube and click the **Settings** gear. You can also open **Options** from the Video Vocab card at `chrome://extensions`.
 2. Choose **English** or **中文** in the upper-right corner of Settings. Paste each key into its matching field, **Supadata API key** or **DeepSeek API key**.
 3. Click **Save settings / 保存设置**, then close and reopen the Video Vocab sidebar so it uses the new settings.
-4. Test on a public video with English captions. Open **Transcript** and check for timestamped captions. Then open **Overview** or **Vocabulary → Learn** to check that the AI features work.
+4. Test on a public video with available captions. Open **Transcript** and check for timestamped captions, then switch to **双语** (Bilingual) to check that the Simplified Chinese translation appears.
 
 The release uses DeepSeek Flash with the model ID `deepseek-flash` and the endpoint `https://api.deepseek.com`. Both are configured for you. Enter your keys directly in extension settings and keep them out of chats, screenshots, and source files. [DeepSeek model documentation](https://api-docs.deepseek.com/quick_start/pricing/)
 
@@ -66,11 +66,11 @@ The release uses DeepSeek Flash with the model ID `deepseek-flash` and the endpo
 
 ## 3. Learn from a video
 
-For your first session, choose a short video with English captions and save a few expressions as you watch.
+Start with a short video that has available captions and try the bilingual view. To try chapter vocabulary extraction, choose a video with English captions.
 
 1. Use **Transcript** to search captions or switch between **Original**, **中文**, and **双语**. Click a timestamp to jump in the video. Select text to **Explain** or **Save** it.
 2. Use **Overview** to see AI-generated chapters and key quotes. Click a chapter timestamp to jump to it.
-3. Open **Vocabulary → Learn** to study expressions from the current chapter in playback order. The first 10 appear by default. Use **View more** to show the next batch of extracted items, or select another chapter to jump in the video and study it.
+3. Open **Vocabulary → Learn** to study English expressions from the current chapter in playback order. The first 10 appear by default. Use **View more** to show the next batch of extracted items, or select another chapter to jump in the video and study it.
 4. Click **Save** to collect an expression and **Play source** to revisit it. Turn on **Hide meanings** to test yourself, then click **Show meaning** to check. **Saved** shows this video's collection. A fresh installation starts with an empty collection.
 
 Longer chapters can be processed in batches. Use **Pause** when shown, then **Continue extraction** to resume later. If a selected chapter shows **Extract chapter**, click it to start extraction.
@@ -106,7 +106,7 @@ Extension exports carry the extension's saved items. Notes, review history, and 
 
 Send the link to this repository and the prompt below to your agent.
 
-> Download or clone Video Vocab to a permanent folder I choose and tell me its exact full path. If I need a folder suggestion, offer `~/Documents/video-vocab` on macOS or Linux, or `%USERPROFILE%\Documents\video-vocab` on Windows. Show me how to select the folder containing manifest.json using Chrome's Load unpacked button, where to get my own Supadata and DeepSeek API keys, and where to enter them. I will enter the keys myself. Then use a YouTube video with English captions to check Transcript, Vocabulary, and the HTML export.
+> Download or clone Video Vocab to a permanent folder I choose and tell me its exact full path. If I need a folder suggestion, offer `~/Documents/video-vocab` on macOS or Linux, or `%USERPROFILE%\Documents\video-vocab` on Windows. Show me how to select the folder containing manifest.json using Chrome's Load unpacked button, where to get my own Supadata and DeepSeek API keys, and where to enter them. I will enter the keys myself. Then use a YouTube video with available captions to check Transcript and bilingual translation. Use a video with English captions to check Vocabulary and the HTML export.
 
 ## Supported scope
 
@@ -114,8 +114,9 @@ Send the link to this repository and the prompt below to your agent.
 | --- | --- |
 | Browser | Desktop Google Chrome 116 or later. Install using Developer mode and Load unpacked. Firefox, Safari, and mobile browsers are outside the supported scope. |
 | Video pages | Standard `www.youtube.com/watch` pages. Start with a public video that has native captions. Shorts, live streams, embeds, and restricted videos may be unavailable. |
-| Captions | Existing tracks returned by Supadata, with English preferred. Video Vocab does not transcribe audio if an existing track is unavailable. |
-| Languages | English and Simplified Chinese for the guides and Settings. Transcript and Overview can show original text, Chinese, or both where available. The offline notebook interface is in Simplified Chinese, with English expressions and examples. |
+| Captions | Supadata fetches existing caption tracks and prefers English. If English is unavailable, Video Vocab can use the caption track returned in another language. It does not transcribe audio when no existing track is available. |
+| Chinese translation and bilingual view | **Transcript** can translate available captions from multiple source languages into Simplified Chinese. Show the original text, the Chinese translation, or both. |
+| Vocabulary and interface | **Vocabulary** extracts English expressions by chapter. The guides and Settings are available in English and Simplified Chinese. The offline notebook interface is in Simplified Chinese. |
 | Online and offline use | Captions and AI features require an internet connection and the corresponding keys. An exported HTML notebook can be browsed, organized, and reviewed offline. Video source links require an internet connection. |
 
 ## Troubleshooting
@@ -133,7 +134,7 @@ The extension sends the video URL to Supadata for captions, and sends relevant c
 
 ## Remix it with your coding agent
 
-Video Vocab uses plain HTML, CSS, and JavaScript. Ideas for your own copy include more translation languages and customized summary templates. For Video Vocab questions, use this repository's documentation and security reporting instructions. The upstream project states that upstream issues and pull requests are not accepted.
+Video Vocab uses plain HTML, CSS, and JavaScript. Ideas for your own copy include more translation target languages and customized summary templates. For Video Vocab questions, use this repository's documentation and security reporting instructions. The upstream project states that upstream issues and pull requests are not accepted.
 
 To change providers or models, first open the exact Video Vocab project folder that Chrome loaded through **Load unpacked** in your coding agent. In **Settings**, use **Copy customization prompt** and supply the provider and model. Enter your key in the extension after the adaptation.
 
