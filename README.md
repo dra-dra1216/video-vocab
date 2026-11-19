@@ -2,16 +2,16 @@
 
 **English** · [简体中文完整教程](README.zh-CN.md)
 
-**Translate multilingual YouTube captions into Simplified Chinese, view the original and translation together, and save useful English expressions by chapter for offline spaced review.**
+**Read YouTube captions alongside their Simplified Chinese translation, save expressions from captions in multiple languages, and review them offline.**
 
 [Highlights](#highlights) · [Manual installation](#1-install-in-chrome-manually) · [API keys](#2-get-and-enter-your-api-keys) · [First use](#3-learn-from-a-video) · [Notebook](#4-build-your-vocabulary-notebook) · [Supported scope](#supported-scope) · [Troubleshooting](#troubleshooting)
 
-Video Vocab is a desktop Chrome extension based on Zara Zhang's YouTube Digest. Use it to follow interviews, talks, and courses in different languages and build a collection of natural English expressions. [Original project](https://github.com/zarazhangrui/youtube-digest) · [MIT license](LICENSE)
+Video Vocab is a desktop Chrome extension based on Zara Zhang's YouTube Digest. Use it to follow interviews, talks, and courses in different languages and build a collection of expressions you want to remember. [Original project](https://github.com/zarazhangrui/youtube-digest) · [MIT license](LICENSE)
 
 ## Highlights
 
 - **Learn one chapter at a time.** The sidebar extracts reusable phrases, natural collocations, and useful words from the selected chapter. Start with 10, then show more as needed. Select a chapter or a timestamp to return to that point in the video.
-- **Keep the context when you save.** Save an expression with its meaning, source sentence, and timestamp when available. You can also select a phrase directly from the transcript.
+- **Save expressions from multilingual captions.** Select text in the original transcript and click **Save**. Your collection keeps the video source and timestamp, along with the source sentence and meaning when available.
 - **Review across videos in one offline notebook.** Export an HTML notebook, open it in your browser, and use FSRS-6 for spaced review. Each entry links back to its video and timestamp.
 - **Read the original captions alongside Chinese.** Search multilingual captions and switch between the original text, Simplified Chinese, and bilingual view. The sidebar also offers AI overviews, key quotes, text explanations, and timestamped notes.
 
@@ -68,7 +68,7 @@ The release uses DeepSeek Flash with the model ID `deepseek-flash` and the endpo
 
 Start with a short video that has available captions and try the bilingual view. To try chapter vocabulary extraction, choose a video with English captions.
 
-1. Use **Transcript** to search captions or switch between **Original**, **中文**, and **双语**. Click a timestamp to jump in the video. Select text to **Explain** or **Save** it.
+1. Use **Transcript** to search captions or switch between **Original**, **中文**, and **双语**. Click a timestamp to jump in the video. Select text in the original captions and click **Save** to add it to **Vocabulary → Saved**, or click **Explain** for an explanation.
 2. Use **Overview** to see AI-generated chapters and key quotes. Click a chapter timestamp to jump to it.
 3. Open **Vocabulary → Learn** to study English expressions from the current chapter in playback order. The first 10 appear by default. Use **View more** to show the next batch of extracted items, or select another chapter to jump in the video and study it.
 4. Click **Save** to collect an expression and **Play source** to revisit it. Turn on **Hide meanings** to test yourself, then click **Show meaning** to check. **Saved** shows this video's collection. A fresh installation starts with an empty collection.
@@ -106,7 +106,7 @@ Extension exports carry the extension's saved items. Notes, review history, and 
 
 Send the link to this repository and the prompt below to your agent.
 
-> Download or clone Video Vocab to a permanent folder I choose and tell me its exact full path. If I need a folder suggestion, offer `~/Documents/video-vocab` on macOS or Linux, or `%USERPROFILE%\Documents\video-vocab` on Windows. Show me how to select the folder containing manifest.json using Chrome's Load unpacked button, where to get my own Supadata and DeepSeek API keys, and where to enter them. I will enter the keys myself. Then use a YouTube video with available captions to check Transcript and bilingual translation. Use a video with English captions to check Vocabulary and the HTML export.
+> Download or clone Video Vocab to a permanent folder I choose and tell me its exact full path. If I need a folder suggestion, offer `~/Documents/video-vocab` on macOS or Linux, or `%USERPROFILE%\Documents\video-vocab` on Windows. Show me how to select the folder containing manifest.json using Chrome's Load unpacked button, where to get my own Supadata and DeepSeek API keys, and where to enter them. I will enter the keys myself. Then use a YouTube video with available captions to check Transcript, bilingual translation, manual saves, and the HTML export. Use a video with English captions to check automatic chapter extraction.
 
 ## Supported scope
 
@@ -116,7 +116,9 @@ Send the link to this repository and the prompt below to your agent.
 | Video pages | Standard `www.youtube.com/watch` pages. Start with a public video that has native captions. Shorts, live streams, embeds, and restricted videos may be unavailable. |
 | Captions | Supadata fetches existing caption tracks and prefers English. If English is unavailable, Video Vocab can use the caption track returned in another language. It does not transcribe audio when no existing track is available. |
 | Chinese translation and bilingual view | **Transcript** can translate available captions from multiple source languages into Simplified Chinese. Show the original text, the Chinese translation, or both. |
-| Vocabulary and interface | **Vocabulary** extracts English expressions by chapter. The guides and Settings are available in English and Simplified Chinese. The offline notebook interface is in Simplified Chinese. |
+| Manual saves | Select expressions in the original **Transcript** across caption languages, save them to **Vocabulary → Saved**, and export them to the offline notebook. |
+| Automatic chapter extraction | **Vocabulary → Learn** is designed primarily for English expressions. |
+| Interface and guides | The guides and Settings are available in English and Simplified Chinese. The offline notebook interface is in Simplified Chinese. |
 | Online and offline use | Captions and AI features require an internet connection and the corresponding keys. An exported HTML notebook can be browsed, organized, and reviewed offline. Video source links require an internet connection. |
 
 ## Troubleshooting
