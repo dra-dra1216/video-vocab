@@ -47,6 +47,8 @@ let interfaceTranslationInFlight = new Set();
 let interfaceTranslationFailures = new Set();
 let currentNotes = [];
 let currentNotesFilterVideoId = null;
+let notesShowAll = false;
+let notesRequestGeneration = 0;
 const TRANSLATION_MESSAGE_TIMEOUT_MS = 130_000;
 const TRANSLATION_BATCH_SIZE = 3;
 
@@ -287,11 +289,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ success: true });
   }
   if (message.action === "noteSaved") {
-    // Refresh notes list when a new note is saved
-    const filterAll = document
-      .getElementById("notesFilterAll")
-      ?.classList.contains("active");
-    loadNotes(filterAll ? null : currentVideoId);
+    if (message.note?.videoId === currentVideoId) {
+      document.getElementById("myNotes").open = true;
+    }
+    void loadNotes();
     sendResponse({ success: true });
   }
   return false;
@@ -458,18 +459,21 @@ function setupEventListeners() {
       }
     });
 
-  // Notes filter buttons
   document.getElementById("notesFilterThis")?.addEventListener("click", () => {
     setNotesFilter(false);
-    loadNotes(currentVideoId);
+    void loadNotes();
   });
   document.getElementById("notesFilterAll")?.addEventListener("click", () => {
     setNotesFilter(true);
-    loadNotes(null); // Load all notes
+    void loadNotes();
+  });
+  document.getElementById("myNotes")?.addEventListener("toggle", () => {
+    void translateNotesContent();
   });
 }
 
 function setNotesFilter(showAll) {
+  notesShowAll = showAll;
   const thisVideoButton = document.getElementById("notesFilterThis");
   const allNotesButton = document.getElementById("notesFilterAll");
   thisVideoButton?.classList.toggle("active", !showAll);
@@ -657,7 +661,7 @@ async function startDigest(videoId, videoUrl) {
     restorePendingTranscriptViewState(videoId);
 
     // Load notes for this video
-    loadNotes(videoId);
+    void loadNotes();
 
     // Setup explain feature
     setupExplainFeature();
@@ -722,7 +726,7 @@ async function startDigest(videoId, videoUrl) {
   restorePendingTranscriptViewState(videoId);
 
   // Load notes for this video
-  loadNotes(videoId);
+  void loadNotes();
 
   // Setup explain feature for text selection
   setupExplainFeature();
@@ -897,6 +901,7 @@ function getNoteTranslationId(note, index) {
 }
 
 function translateNotesContent() {
+  if (!resultTabIsActive("overview") || !document.getElementById("myNotes")?.open) return;
   const segments = currentNotes.map((note, index) => ({
     id: getNoteTranslationId(note, index),
     text: note.text || "",
@@ -1026,8 +1031,6 @@ async function saveQuoteAsNote(quote, btn) {
         btn.textContent = originalText;
         btn.disabled = false;
       }, 1500);
-      // Refresh notes list if on Notes tab
-      loadNotes(currentVideoId);
     } else {
       console.error("[YouTube Digest] Save quote as note failed:", result.error);
       btn.textContent = "Error";
@@ -1492,18 +1495,6 @@ function switchTab(tabName) {
     stopPlaybackTracking();
   }
 
-  // Saved notes are stored newest first. Open Notes at the top so the note the
-  // user just created is the first item they see.
-  if (tabName === "notes") {
-    requestAnimationFrame(() => {
-      const contentArea = document.getElementById("contentArea");
-      const notesPanelIsActive = document.querySelector(
-        '.tab-panel[data-panel="notes"].active',
-      );
-      if (contentArea && notesPanelIsActive) contentArea.scrollTop = 0;
-    });
-  }
-
   // Translate only the visible tab. This prevents hidden surfaces from using
   // tokens or competing with the batch queue the user is waiting for.
   if (tabName === "overview") {
@@ -1512,11 +1503,7 @@ function switchTab(tabName) {
     } else if (currentAnalysis && currentTranscriptMode !== "original") {
       void translateOverviewContent();
     }
-  } else if (
-    tabName === "notes" &&
-    currentTranscriptMode !== "original"
-  ) {
-    void translateNotesContent();
+    void loadNotes();
   } else if (
     tabName === "transcript" &&
     currentTranscriptMode !== "original" &&
@@ -2094,17 +2081,20 @@ async function updateCache() {
 // ============================================================
 
 /**
- * Loads and renders notes from storage.
- * @param {string|null} videoId - Filter by video ID, or null for all notes
+ * Loads and renders the active My Notes filter.
  */
-async function loadNotes(videoId) {
+async function loadNotes() {
+  const generation = ++notesRequestGeneration;
+  const videoId = notesShowAll ? null : currentVideoId;
+  if (!notesShowAll && !videoId) return;
   try {
     const result = await chrome.runtime.sendMessage({
       action: "getNotes",
       videoId: videoId,
     });
 
-    if (result.success) {
+    if (generation !== notesRequestGeneration || (videoId && videoId !== currentVideoId)) return;
+    if (result?.success) {
       currentNotes = result.notes || [];
       currentNotesFilterVideoId = videoId;
       renderNotes(result.notes, videoId);
@@ -2115,7 +2105,7 @@ async function loadNotes(videoId) {
 }
 
 /**
- * Renders the notes list in the Notes tab.
+ * Renders the notes list in Overview.
  */
 function renderNotes(notes, filteredVideoId) {
   const notesList = document.getElementById("notesList");
@@ -2172,7 +2162,7 @@ function renderNotes(notes, filteredVideoId) {
       .addEventListener("click", async (e) => {
         e.stopPropagation();
         await deleteNote(note.id);
-        loadNotes(filteredVideoId);
+        void loadNotes();
       });
 
     // Copy text button — copies just the note's text
@@ -2217,9 +2207,7 @@ function renderNotes(notes, filteredVideoId) {
     notesList.appendChild(noteEl);
   });
 
-  if (currentTranscriptMode !== "original" && resultTabIsActive("notes")) {
-    void translateNotesContent();
-  }
+  void translateNotesContent();
 }
 
 /**
@@ -2616,8 +2604,6 @@ async function handleDisplayLanguageModeChange(mode) {
   }
   if (activeTabName === "overview" && currentAnalysis) {
     await translateOverviewContent();
-  } else if (activeTabName === "notes" && currentNotes.length) {
-    await translateNotesContent();
   } else if (activeTabName === "transcript") {
     await translateTranscript();
   }

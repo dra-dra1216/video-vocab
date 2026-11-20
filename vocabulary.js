@@ -38,7 +38,9 @@ const vocabularyExamplePending=new Set();
 let vocabularyLoopId = null;
 function vocabularyEntryId(entry) { return entry.kind === 'note' && entry.sourceNoteId ? `note:${entry.sourceNoteId}` : vocabularyId(entry); }
 async function vocabularyRecords(snapshotOnly = false) {
-  const result = await chrome.runtime.sendMessage({ action: 'getVocabulary', snapshotOnly });
+  const result = await chrome.runtime.sendMessage({
+    action: 'getVocabulary', expressionsOnly: true, snapshotOnly,
+  });
   if (!result?.success) throw new Error(result?.error || 'Could not load vocabulary');
   return result.records;
 }
@@ -356,7 +358,6 @@ function handleVocabularyProgress(message) {
 document.addEventListener('DOMContentLoaded', () => {
   chrome.runtime.onMessage?.addListener(message => {
     handleVocabularyProgress(message);
-    if (message.action === 'noteSaved') void renderVocabulary();
   });
   document.querySelectorAll('[data-vocab-view]').forEach(button => button.addEventListener('click', () => {
     vocabularyView = button.dataset.vocabView;

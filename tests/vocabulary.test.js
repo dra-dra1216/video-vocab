@@ -251,6 +251,21 @@ test('View more reveals ten more cards in source order with no extraction reques
  assert.equal(cards().children.filter(x=>x.tag==='article').length,20);assert.equal(requests,0);
 });
 
+test('Vocabulary views and exports omit migrated notes but keep explicit saves and the legacy backup', async () => {
+  const {context:c,store}=backend();
+  const expression={kind:'expression',videoId:'abcdefghijk',term:'saved from the transcript',status:'saved'};
+  const note={kind:'note',videoId:'abcdefghijk',term:'old note',sourceNoteId:'old',learningExpression:true,status:'saved'};
+  store.ytd_notes=[{id:'old',videoId:'abcdefghijk',text:'old note',timestampSeconds:24}];
+  store.ytd_vocabulary={'saved':expression,'note:old':note};
+  const snapshot=await c.getVocabularyRecords({expressionsOnly:true,snapshotOnly:true});
+  const cards=await c.getVocabularyRecords({expressionsOnly:true});
+  assert.deepEqual(Object.keys(snapshot),['saved']);
+  assert.deepEqual(Object.keys(cards),['saved']);
+  const backup=await c.getVocabularyRecords({snapshotOnly:true});
+  assert.deepEqual(Object.keys(backup),['saved','note:old']);
+  assert.equal(store.ytd_notes[0].timestampSeconds,24);
+});
+
 test('legacy selected notes gain meanings and verified captions without losing notes, status or stable IDs',async()=>{
  const {context:c,store}=backend();store.ytd_notes=[];store.ytd_vocabulary={'note:one':{kind:'note',sourceNoteId:'one',videoId:'abcdefghijk',term:'misled',meaning:'',sentence:'misled',timestamp:0,status:'mastered',note:'Keep personal note'},'note:bad':{kind:'note',sourceNoteId:'bad',videoId:'abcdefghijk',term:'not in captions',timestamp:0,status:'saved'}};
  store.digest_abcdefghijk={transcript:[{text:'Do not be misled by the old map.',start:30,duration:4}]};
@@ -322,7 +337,7 @@ test('exports can upgrade old examples using local caption caches without changi
  const old={term:'ballpark figure',meaning:'估计',videoId:'abcdefghijk',timestamp:5,sentence:'ballpark figure',note:'Keep this',savedAt:'2026-11-01T00:00:00Z',srs:{history:[{rating:3}]},status:'saved'};
  store.ytd_vocabulary={one:old,two:{...old,videoId:'12345678901'}};
  store.digest_abcdefghijk={transcript:[{start:0,text:'We need a'},{start:5,text:'ballpark figure'},{start:7,text:'before Friday.'}]};
- const records=await c.vocabularyCollectionWithSources();assert.equal(records.one.sentence,'We need a ballpark figure before Friday.');
+ const records=await c.getVocabularyRecords({expressionsOnly:true});assert.equal(records.one.sentence,'We need a ballpark figure before Friday.');
  for(const key of ['note','savedAt','srs'])assert.equal(records.one[key],old[key]);
  assert.equal(records.two.sentence,'ballpark figure');assert.equal(store.ytd_vocabulary.one,old);assert.equal(calls(),0);
 });
@@ -351,7 +366,7 @@ test('repaired original examples are cached and persist without losing notes or 
  const result=await c.handleVocabularyExamples({videoId:'abcdefghijk',items:[entry]});assert.equal(result.items[0].sentenceVersion,4);
  const saved=store.ytd_vocabulary['abcdefghijk:ballpark figure'];assert.equal(saved.note,'My note');assert.equal(saved.savedAt,'2026-11-01');assert.equal(saved.srs,entry.srs);
  await c.handleVocabularyExamples({videoId:'abcdefghijk',items:[entry]});assert.equal(requests,1);
- const records=await c.vocabularyCollectionWithSources();assert.equal(records['abcdefghijk:ballpark figure'].sentence,'We need a ballpark figure before Friday.');
+ const records=await c.getVocabularyRecords({expressionsOnly:true});assert.equal(records['abcdefghijk:ballpark figure'].sentence,'We need a ballpark figure before Friday.');
 });
 test('example completion rejects invented source words and does not resurrect a deleted save during the AI request',async()=>{
  const {context:c,store}=backend(),entry={videoId:'abcdefghijk',term:'ballpark figure',timestamp:4,status:'saved'};
@@ -393,6 +408,7 @@ test('HTML export reads one saved snapshot across all videos without requesting 
   await c.exportVocabulary('html');
   assert.equal(requests.length,1);
   assert.equal(requests[0].snapshotOnly,true);
+  assert.equal(requests[0].expressionsOnly,true);
   const payload=JSON.parse(content.match(/<script id="vocabulary-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
   assert.ok(payload.items.some(item=>item.videoId==='abcdefghijk'));
   assert.ok(payload.items.some(item=>item.url===legacyUrl&&item.sentence==='Original unpunctuated words'));

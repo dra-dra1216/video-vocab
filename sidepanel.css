@@ -1325,8 +1325,23 @@ body {
 }
 
 /* ============================================================
-   NOTES TAB
+   OVERVIEW NOTES
    ============================================================ */
+
+.overview-notes > summary {
+  cursor: pointer;
+  width: fit-content;
+  padding-block: 6px;
+}
+
+.overview-notes > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.overview-notes .notes-intro {
+  padding: 18px 8px;
+}
 
 /* Segmented filter control (This Video / All Notes) */
 .notes-filter {
@@ -1478,6 +1493,8 @@ body {
 
 .note-actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
 }
 

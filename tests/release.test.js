@@ -17,7 +17,7 @@ test("manifest uses minimized install-time permissions", () => {
   assert.ok(!manifest.permissions.includes("activeTab"));
   assert.ok(manifest.host_permissions.includes("https://api.deepseek.com/*"));
   assert.equal(Object.hasOwn(manifest, "optional_host_permissions"), false);
-  assert.equal(manifest.version, "1.8.16");
+  assert.equal(manifest.version, "1.8.17");
 });
 
 test("release copy documents current scope without em dashes", () => {
@@ -190,6 +190,10 @@ test("notes filters preserve selected contrast and expose pressed state", () => 
   const css = read("sidepanel.css");
   const js = read("sidepanel.js");
 
+  const overview = html.slice(html.indexOf('data-panel="overview"'), html.indexOf('data-panel="vocabulary"'));
+  assert.match(overview, /id="quotesList"[\s\S]*<details[^>]*id="myNotes"[\s\S]*<summary[^>]*>My Notes<\/summary>/);
+  assert.doesNotMatch(html, /data-panel="notes"/);
+  assert.match(js, /note-copy-text">Copy text[\s\S]*note-copy-link[^>]*>Copy timestamp[\s\S]*note-play[^>]*>Play/);
   assert.match(
     html,
     /id="notesFilterThis"[\s\S]*?aria-pressed="true"[\s\S]*?>[\s\S]*?This Video/,

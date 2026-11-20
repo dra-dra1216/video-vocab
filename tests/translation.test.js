@@ -279,11 +279,15 @@ test("Overview shares the Transcript batch generation and retries when opened", 
   );
   assert.match(
     js,
-    /Translate only the visible tab[\s\S]*?tabName === "notes"[\s\S]*?translateNotesContent\(\)/,
+    /function translateNotesContent\(\) \{\s*if \(!resultTabIsActive\("overview"\) \|\| !document\.getElementById\("myNotes"\)\?\.open\) return/,
   );
   assert.match(
     js,
-    /activeTabName === "overview"[\s\S]*?translateOverviewContent\(\)[\s\S]*?activeTabName === "notes"[\s\S]*?translateNotesContent\(\)[\s\S]*?activeTabName === "transcript"[\s\S]*?translateTranscript\(\)/,
+    /getElementById\("myNotes"\)\?\.addEventListener\("toggle",[\s\S]*?translateNotesContent\(\)/,
+  );
+  assert.match(
+    js,
+    /activeTabName === "overview"[\s\S]*?translateOverviewContent\(\)[\s\S]*?activeTabName === "transcript"[\s\S]*?translateTranscript\(\)/,
   );
 });
 

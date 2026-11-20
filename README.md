@@ -69,7 +69,7 @@ The release uses DeepSeek Flash with the model ID `deepseek-flash` and the endpo
 Start with a short video that has available captions and try the bilingual view. To try chapter vocabulary extraction, choose a video with English captions.
 
 1. Use **Transcript** to search captions or switch between **Original**, **中文**, and **双语**. Click a timestamp to jump in the video. Select text in the original captions and click **Save** to add it to **Vocabulary → Saved**, or click **Explain** for an explanation.
-2. Use **Overview** to see AI-generated chapters and key quotes. Click a chapter timestamp to jump to it.
+2. Use **Overview** to see AI-generated chapters and key quotes. Click a chapter timestamp to jump to it. Use **Note** on the video or a key quote, then open **My Notes** below **Key Quotes**. Switch between **This Video** and **All Notes**, and use **Copy text**, **Copy timestamp**, or **Play** on any note.
 3. Open **Vocabulary → Learn** to study English expressions from the current chapter in playback order. The first 10 appear by default. Use **View more** to show the next batch of extracted items, or select another chapter to jump in the video and study it.
 4. Click **Save** to collect an expression and **Play source** to revisit it. Turn on **Hide meanings** to test yourself, then click **Show meaning** to check. **Saved** shows this video's collection. A fresh installation starts with an empty collection.
 

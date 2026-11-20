@@ -224,6 +224,31 @@
               </div>
             </div>
           </div>
+          <details class="section overview-notes" id="myNotes">
+            <summary class="section-title">My Notes</summary>
+            <div class="section-header">
+              <div class="notes-filter">
+                <button
+                  class="enhance-btn active"
+                  id="notesFilterThis"
+                  aria-pressed="true"
+                >
+                  This Video
+                </button>
+                <button
+                  class="enhance-btn"
+                  id="notesFilterAll"
+                  aria-pressed="false"
+                >
+                  All Notes
+                </button>
+              </div>
+            </div>
+            <p class="notes-intro" id="notesIntro" role="status">
+              Use Note on the video or a key quote to save a timestamped note.
+            </p>
+            <div id="notesList"></div>
+          </details>
         </div>
 
         <div class="tab-panel" data-panel="vocabulary">
@@ -247,35 +272,6 @@
             </div>
             <p id="vocabStatus" role="status" aria-live="polite"></p>
             <div id="vocabList"></div>
-          </div>
-        </div>
-        <!-- TAB: Notes -->
-        <div class="tab-panel" data-panel="notes">
-          <div class="section">
-            <div class="section-header">
-              <div class="section-title">Saved Notes</div>
-              <div class="notes-filter">
-                <button
-                  class="enhance-btn active"
-                  id="notesFilterThis"
-                  aria-pressed="true"
-                >
-                  This Video
-                </button>
-                <button
-                  class="enhance-btn"
-                  id="notesFilterAll"
-                  aria-pressed="false"
-                >
-                  All Notes
-                </button>
-              </div>
-            </div>
-            <p class="notes-intro" id="notesIntro">
-              Move your mouse over the video and click Note to save a
-              timestamped note, or press the "n" key while the video is focused.
-            </p>
-            <div id="notesList"></div>
           </div>
         </div>
       </div>

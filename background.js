@@ -370,12 +370,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   if (["updateVocabulary", "getVocabulary", "restoreVocabulary"].includes(message.action)) {
     queueVocabulary(async () => {
-      const savedRecords = await migrateVocabularyNotes();
       if (message.action === "getVocabulary") {
-        const records = message.snapshotOnly === true ? savedRecords : await vocabularyCollectionWithSources();
-        return { success: true, records };
+        return { success: true, records: await getVocabularyRecords(message) };
       }
-      return message.action === "restoreVocabulary" ? restoreVocabulary(message.backup) : updateVocabulary(message);
+      if (message.action === "restoreVocabulary") {
+        await migrateVocabularyNotes();
+        return restoreVocabulary(message.backup);
+      }
+      return updateVocabulary(message);
     }).then(sendResponse).catch(error => sendResponse({success: false, error: error.message}));
     return true;
   }
@@ -1427,9 +1429,7 @@ async function saveNoteToStorage(note) {
     const notes = result.ytd_notes || [];
     notes.unshift(note);
     await chrome.storage.local.set({ytd_notes: notes});
-    await migrateVocabularyNotes();
   });
-  void enrichVocabularyNotes({videoId:note.videoId,fetchMissing:false}).catch(()=>{});
 }
 
 /**
@@ -1815,9 +1815,20 @@ Return JSON {"items":[{"index":0,"sentence":"punctuated original sentence.","usa
   vocabularyExampleRequests.set(requestKey,task);
   try{return await task;}finally{vocabularyExampleRequests.delete(requestKey);}
 }
-async function vocabularyCollectionWithSources() {
-  const stored = await chrome.storage.local.get('ytd_vocabulary');
-  const records = stored.ytd_vocabulary || {};
+async function getVocabularyRecords({ expressionsOnly, snapshotOnly }) {
+  let records;
+  if (expressionsOnly === true) {
+    const stored = await chrome.storage.local.get("ytd_vocabulary");
+    records = Object.fromEntries(Object.entries(stored.ytd_vocabulary || {})
+      .filter(([, item]) => item.kind !== "note"));
+  } else {
+    records = await migrateVocabularyNotes();
+  }
+
+  return snapshotOnly === true ? records : vocabularyCollectionWithSources(records);
+}
+
+async function vocabularyCollectionWithSources(records) {
   const keys = [...new Set(Object.values(records).map(item => `digest_${item.videoId}`))];
   const caches = keys.length ? await chrome.storage.local.get(keys) : {};
   const result = {};

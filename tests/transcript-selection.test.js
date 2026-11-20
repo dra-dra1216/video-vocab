@@ -76,10 +76,10 @@ test("leaving Transcript dismisses its selection actions", () => {
   );
 });
 
-test("Notes opens at its newest item and Transcript keeps its position", () => {
+test("saving a note opens My Notes and Transcript keeps its reading position", () => {
   assert.match(
     source,
-    /if \(tabName === "notes"\)[\s\S]*notesPanelIsActive[\s\S]*contentArea\.scrollTop = 0/,
+    /message.action === "noteSaved"[\s\S]*?message.note\?\.videoId === currentVideoId[\s\S]*?getElementById\("myNotes"\).open = true[\s\S]*?void loadNotes\(\)/,
   );
   assert.match(
     source,
